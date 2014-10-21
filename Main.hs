@@ -30,6 +30,29 @@ data Word = A Double
           | Z Double
     deriving (Eq, Read, Show)
 
+data Units = Metric | Imperial
+    deriving (Eq, Read, Show)
+data Plane = XY | ZX | YZ | UV | WU | VW
+    deriving (Eq, Read, Show)
+-- ...
+
+g00 = G 0
+g01 = G 1
+g02 = G 2
+g03 = G 3
+g04 = G 4
+g17 = G 17
+g18 = G 18
+g19 = G 19
+g17_1 = G 17.1
+g18_1 = G 18.1
+g19_1 = G 19.1
+g20 = G 20
+g21 = G 21
+g40 = G 40
+g49 = G 49
+-- ...
+
 axis :: Word -> Bool
 axis (X _) = True
 axis (Y _) = True
