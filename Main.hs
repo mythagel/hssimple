@@ -8,6 +8,9 @@
 --data Axis = X Double | Y Double | Z Double | A Double | B Double | C Double
 --    deriving (Eq, Read, Show)
 
+-- TODO implement custom show instance 
+-- which outputs words as required for gcode
+-- (generally truncated to 6 digits)
 data Word = A Double 
           | B Double
           | C Double
@@ -35,6 +38,10 @@ data Units = Metric | Imperial
 data Plane = XY | ZX | YZ | UV | WU | VW
     deriving (Eq, Read, Show)
 data CoordinateSystem = Active | P1 | P2 | P3 | P4 | P5 | P6 | P7 | P8 | P9
+    deriving (Eq, Read, Show)
+data Motion = Absolute | Incremental
+    deriving (Eq, Read, Show)
+data ArcMotion = ArcAbsolute | ArcIncremental
     deriving (Eq, Read, Show)
 -- ...
 
@@ -109,15 +116,23 @@ coordinateSystemWord P7 = g59_1
 coordinateSystemWord P8 = g59_2
 coordinateSystemWord P9 = g59_3
 
-preamble :: Plane -> Units -> CoordinateSystem -> [Word]
-preamble plane units cs = [g00, planeWord plane, unitsWord units, g40, g49, coordinateSystemWord cs, G 80]
+motionWord :: Motion -> Word
+motionWord Absolute = G 90
+motionWord Incremental = G 91
+
+arcMotionWord :: ArcMotion -> Word
+arcMotionWord ArcAbsolute = G 90.1
+arcMotionWord ArcIncremental = G 91.1
+
+preamble :: Plane -> Units -> CoordinateSystem -> Motion -> ArcMotion -> [Word]
+preamble plane units cs motion arc = [g00, planeWord plane, unitsWord units, g40, g49, coordinateSystemWord cs, G 80, motionWord motion, arcMotionWord arc]
 
 main :: IO ()
 main = do
     let x = X 20
         isLinear = linearAxis x
     putStrLn $ show isLinear
-    putStrLn $ show $ preamble XY Metric P1
+    putStrLn $ show $ preamble XY Metric P1 Absolute ArcIncremental
 
 
 
