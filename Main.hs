@@ -1,4 +1,5 @@
 -- import System.Environment
+import Numeric
 {-|
  - Holy crap, compare with
  - https://github.com/mythagel/cxxcam/blob/master/include/Axis.h
@@ -31,7 +32,32 @@ data Word = A Double
           | X Double
           | Y Double
           | Z Double
-    deriving (Eq, Read, Show)
+    deriving (Eq, Read)
+
+dec6 :: Double -> String
+dec6 v = Numeric.showFFloat (Just 6) v ""
+
+instance Show Word where
+   show (A v) = "A" ++ dec6 v
+   show (B v) = "B" ++ dec6 v
+   show (C v) = "C" ++ dec6 v
+   show (D v) = "D" ++ show v
+   show (F v) = "F" ++ dec6 v
+   show (G v) = "G" ++ dec6 v
+   show (H v) = "H" ++ show v
+   show (I v) = "I" ++ dec6 v
+   show (J v) = "J" ++ dec6 v
+   show (K v) = "K" ++ dec6 v
+   show (L v) = "L" ++ dec6 v
+   show (M v) = "M" ++ dec6 v
+   show (P v) = "P" ++ dec6 v
+   show (Q v) = "Q" ++ dec6 v
+   show (R v) = "R" ++ dec6 v
+   show (S v) = "S" ++ dec6 v
+   show (T v) = "T" ++ show v
+   show (X v) = "X" ++ dec6 v
+   show (Y v) = "Y" ++ dec6 v
+   show (Z v) = "Z" ++ dec6 v
 
 data Units = Metric | Imperial
     deriving (Eq, Read, Show)
