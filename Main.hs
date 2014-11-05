@@ -34,8 +34,17 @@ data Word = A Double
           | Z Double
     deriving (Eq, Read)
 
+-- Not terribly elegant, need to clean this up and find a idiomatic way to implement it
+-- format a double specifically for gcode
+-- format to 6 digits after the decimal place and then strip trailing zeros
+-- (and decimal point if the number is integral after rounding)
 dec6 :: Double -> String
-dec6 v = Numeric.showFFloat (Just 6) v ""
+dec6 v = 
+    let n = dig6 v
+    in if isInt . read $ n then show . floor $ v else strip0 n
+    where isInt x = x == fromInteger (round x)
+          dig6 x = Numeric.showFFloat (Just 6) v ""
+          strip0 = reverse . dropWhile (== '0') . reverse
 
 instance Show Word where
    show (A v) = "A" ++ dec6 v
