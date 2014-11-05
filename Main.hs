@@ -42,8 +42,8 @@ dec6 :: Double -> String
 dec6 v = 
     let n = dig6 v
     in if isInt . read $ n then show . floor $ v else strip0 n
-    where isInt x = x == fromInteger (round x)
-          dig6 x = Numeric.showFFloat (Just 6) v ""
+    where dig6 x = Numeric.showFFloat (Just 6) v ""
+          isInt x = x == fromInteger (round x)
           strip0 = reverse . dropWhile (== '0') . reverse
 
 instance Show Word where
